@@ -3,23 +3,7 @@ import { mkdirSync } from "node:fs";
 import Log from "../log";
 import colors from 'colors';
 import { relative } from "node:path";
-
-// Various parameters for clang
-interface Parameters {
-  frameworks?: string[];
-  optimizes?: '0' | '1' | '2' | '3' | 'fast' | 's' | 'z' | 'g'
-  debugs?: any;
-  links?: string[];
-  libdirs?: string[];
-  libs?: string[];
-  includes?: string[];
-}
-
-interface SourceExport {
-  returnType: string;
-  methodName: string;
-  methodArgs: [string, string][];
-}
+import { checkHash } from "../difftrack";
 
 /**
  * Builds a source file as a library
@@ -32,7 +16,7 @@ interface SourceExport {
  */
 export async function compileSource(
   source: string,
-  config: NativeModule
+  config: ClangNativeModule
   ): Promise<string> {
   const fileName = source.split(/(\\|\/)/).toReversed()[0];
   const outfile = config?.out || `./out/${fileName}.o`;
@@ -43,6 +27,14 @@ export async function compileSource(
   Log.debug(`Ensuring ${outpath} exists.`);
   mkdirSync(outpath, { recursive: true });
   
+  // Check if file is up to date, build if not.
+  const upToDate = await checkHash(source);
+
+  if (upToDate) {
+    Log.log(`Skipping ${relative('./',source)} -- up to date.`);
+    return outfile;
+  }
+
   Log.debug(`Compiling ${relative('./',source)} into ${outfile}.`);
 
   // Set o flag

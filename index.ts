@@ -1,3 +1,3 @@
-import { ClangCompilePlugin } from "./clang/plugin";
+import { ClangCompilePlugin } from "./src/clang/plugin";
 
 export const clang = ClangCompilePlugin;

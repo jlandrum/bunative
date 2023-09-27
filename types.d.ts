@@ -1,25 +1,4 @@
 interface NativeModule {
-
-  /** Sets the optimization level */
-  optimize?: 0|1|2|3|'f'|'s',
-  
-  /** Specifies which libraries to include */
-  libraries?: string[],
-  
-  /** Specified which frameworks to include */
-  frameworks?: string[],
-  
-  /** Generate debug headers */
-  debug?: boolean,
-  
-  /** Search paths for headers */
-  headerSearchPaths?: string[],
-  
-  /** Search paths for libraries */
-  libSearchPaths?: string[],
-  
-  /** Additional source files to include */
-  additionalSources?: string[],
   
   /** Overrides the output filename/path. */
   out?: string
@@ -27,6 +6,30 @@ interface NativeModule {
   /** Uses the specified header to build the function map, 
    * relative to the source directory */
   useHeader?: string;
+}
+
+interface ClangNativeModule extends NativeModule {
+
+  /** Sets the optimization level */
+  optimize?: 0 | 1 | 2 | 3 | 'fast' | 's' | 'z' | 'g',
+
+  /** Specifies which libraries to include */
+  libraries?: string[],
+
+  /** Specified which frameworks to include */
+  frameworks?: string[],
+
+  /** Generate debug headers */
+  debug?: boolean,
+
+  /** Search paths for headers */
+  headerSearchPaths?: string[],
+
+  /** Search paths for libraries */
+  libSearchPaths?: string[],
+
+  /** Additional source files to include */
+  additionalSources?: string[],
 }
 
 interface NativeModuleConfigSet {
@@ -43,6 +46,18 @@ interface NativeModuleConfigSet {
    * the path.
    */
   [source: string]: NativeModule;
+}
+
+interface SourceExport {
+
+  /** The return type of the method, as a TS type. */
+  returnType: string;
+
+  /** The name of the method */
+  methodName: string;
+
+  /** The arguments for the method */
+  methodArgs: [string, string][];
 }
 
 type Verbosity = undefined | 'v' | 'vv' | 'vvv' | 'vvvv';
