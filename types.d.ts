@@ -34,7 +34,7 @@ interface NativeModuleConfigSet {
    * Global build settings will always be included
    * for all targets.
    */
-  global?: Omit<NativeModule, 'out'>;
+  global?: Omit<NativeModule, 'out', 'useHeader'>;
 
   /**
    * Specifies overrides / target specific properties
