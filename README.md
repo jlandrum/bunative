@@ -16,7 +16,6 @@ long as it exports c-compatible functions.
 
     plugin(
       clang({
-        verbosity: 'vvvv',
         buildConfig: clangConfig,
       })
     );
