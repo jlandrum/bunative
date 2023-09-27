@@ -38,3 +38,5 @@ Then to use, simply import the test.c file; The first time
 you run your code, it will compile and generate type definitions
 for your source file.
 
+## Notes
+* Hash checking only applies to the imported file. If that file includes additional source files, it will not consider the file as changed.
