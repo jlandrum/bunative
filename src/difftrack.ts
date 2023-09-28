@@ -25,7 +25,7 @@ export async function generateHash(fromFile: string): Promise<string | undefined
   return hashHex;
 }
 
-export async function checkHash(forFile: string): Promise<boolean> {
+export async function checkHash(forFile: string, save: boolean = false): Promise<boolean> {
   const hashFolder = file('./.bunative');
   const hashTableFile = file('./.bunative/hash');
 
@@ -58,8 +58,10 @@ export async function checkHash(forFile: string): Promise<boolean> {
   if (hashTable[forFile] === hash) {
     return true;
   } else {
-    hashTable[forFile] = hash;
-    write(hashTableFile, JSON.stringify(hashTable));
+    if (save) {
+      hashTable[forFile] = hash;
+      write(hashTableFile, JSON.stringify(hashTable));
+    }
   }
   return false;
 }

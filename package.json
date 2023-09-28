@@ -2,7 +2,7 @@
   "name": "bunative",
   "module": "index.ts",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "devDependencies": {
     "bun-types": "latest"
   },

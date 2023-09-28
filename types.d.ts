@@ -2,42 +2,57 @@ interface NativeModule {
   
   /** Overrides the output filename/path. */
   out?: string
-
-  /** Uses the specified header to build the function map, 
-   * relative to the source directory */
-  useHeader?: string;
 }
 
 interface ClangNativeModule extends NativeModule {
 
   /** Sets the optimization level */
-  optimize?: 0 | 1 | 2 | 3 | 'fast' | 's' | 'z' | 'g',
+  optimize?: 0 | 1 | 2 | 3 | 'fast' | 's' | 'z' | 'g';
 
   /** Specifies which libraries to include */
-  libraries?: string[],
+  libraries?: string[];
 
   /** Specified which frameworks to include */
-  frameworks?: string[],
+  frameworks?: string[];
 
   /** Generate debug headers */
-  debug?: boolean,
+  debug?: boolean;
 
   /** Search paths for headers */
-  headerSearchPaths?: string[],
+  headerSearchPaths?: string[];
 
   /** Search paths for libraries */
-  libSearchPaths?: string[],
+  libSearchPaths?: string[];
 
   /** Additional source files to include */
-  additionalSources?: string[],
+  additionalSources?: string[];
+
+  /** Uses the specified header to build the function map, 
+ * relative to the source directory */
+  useHeader?: string;
 }
 
-interface NativeModuleConfigSet {
+interface KonanNativeModule extends NativeModule {
+
+  /** Sets the optimization level */
+  optimize?: boolean;
+
+  /** Specifies which libraries to include */
+  libraries?: string[];
+
+  /** Generate debug headers */
+  debug?: boolean;
+
+  /** Additional source files to include */
+  additionalSources?: string[];
+}
+
+interface NativeModuleConfigSet<T extends NativeModule> {
   /**
    * Global build settings will always be included
    * for all targets.
    */
-  global?: Omit<NativeModule, 'out', 'useHeader'>;
+  global?: Omit<T, 'out', 'useHeader'>;
 
   /**
    * Specifies overrides / target specific properties
@@ -45,7 +60,7 @@ interface NativeModuleConfigSet {
    * The source should match the import name, excluding
    * the path.
    */
-  [source: string]: NativeModule;
+  [source: string]: T;
 }
 
 interface SourceExport {

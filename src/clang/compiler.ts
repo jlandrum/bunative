@@ -66,81 +66,13 @@ export async function compileSource(
   Log.debug('Executing:', buildArgs.join(' '));
   
   // Compiling...
-  Bun.spawnSync(buildArgs);
+  await Bun.spawn(buildArgs).exited;
+
+  // Write hash
+  await checkHash(source, true);
   
   Log.log(`Successfully built ${outfile}`);
   return outfile;
-}
-
-/**
- * Given a type from C, return the corresponding FFIType.
- * @param type The C type to convert
- * @returns An FFIType
- */
-export function CTypeToFFI(type: string): FFIType 
-{
-  const CTypeToFFIMap = {
-    'char': FFIType.char,
-    'unsigned': FFIType.int,
-    'unsigned int': FFIType.int,
-    'signed': FFIType.int,
-    'signed int': FFIType.int,
-    'int': FFIType.int,
-    'short': FFIType.i16,
-    'short int': FFIType.i16,
-    'signed short int': FFIType.i16,
-    'long': FFIType.i32,
-    'long int': FFIType.i32,
-    'signed long': FFIType.i32,
-    'signed long int': FFIType.i32,
-    'long long': FFIType.i64,
-    'long long int': FFIType.i64,
-    'unsigned long long': FFIType.i64,
-    'unsigned long long int': FFIType.i64,
-    'signed long long': FFIType.i64,
-    'signed long long int': FFIType.i64,
-    'float': FFIType.float,
-    'long double': FFIType.double,
-    'double': FFIType.double,
-    'char*': FFIType.cstring,
-    'void': FFIType.void,
-    'void*': FFIType.ptr,
-  } as { [key: string]: FFIType };
-  return CTypeToFFIMap?.[type] || FFIType.void;
-}
-
-/**
- * Given an FFI type, return the TypeScript type for it.
- * @param type The type to convert
- * @returns A string representation of the FFIType in TypeScript
- */
-export function FFITypeToTSType(type: FFIType): string 
-{
-  switch (type) {
-    case FFIType.cstring:
-    case FFIType.char: return 'Buffer';
-    case FFIType.i16:
-    case FFIType.i32:
-    case FFIType.i64:
-    case FFIType.float:
-    case FFIType.double:
-    case FFIType.int: return 'number';
-    default:
-    case FFIType.void: return 'unknown';
-  }
-}
-
-/** Given a type from C, return the js type */
-export function inferJSArgType(fromType: string): string {
-  if (/(\*char|char)/.test(fromType)) return 'Buffer';
-  if (/(int|long|double|float)/.test(fromType)) return 'number';
-  return 'unknown';
-}
-
-export function inferJSReturnType(fromType: string): string {
-  if (/(\*char|char)/.test(fromType)) return 'string';
-  if (/(int|long|double|float)/.test(fromType)) return 'number';
-  return 'unknown';
 }
 
 export async function inferArgSignature(fromSignature: string): Promise<[string, FFIType] | undefined> {
@@ -160,7 +92,7 @@ export async function inferArgSignature(fromSignature: string): Promise<[string,
  * @param source The path of the source file to read.
  * @returns 
  */
-export async function getMethods(source: string) {
+export async function getMethods(source: string): Promise<SourceExport[]> {
   Log.debug(`Collecting methods from ${relative('./',source)}`);
 
   const methods: SourceExport[] = [];
@@ -209,4 +141,54 @@ export async function generateTypes(methods: SourceExport[]) {
     const args = method.methodArgs.map((t) => `${t[0]}: ${inferJSArgType(t[1])}`).join(', ');
     return (` export function ${method.methodName}(${args}): ${inferJSReturnType(method.returnType)};`)
   }).join('\n');
+}
+
+/**
+ * Given a type from C, return the corresponding FFIType.
+ * @param type The C type to convert
+ * @returns An FFIType
+ */
+export function CTypeToFFI(type: string): FFIType {
+  const CTypeToFFIMap = {
+    'char': FFIType.char,
+    'unsigned': FFIType.int,
+    'unsigned int': FFIType.int,
+    'signed': FFIType.int,
+    'signed int': FFIType.int,
+    'int': FFIType.int,
+    'short': FFIType.i16,
+    'short int': FFIType.i16,
+    'signed short int': FFIType.i16,
+    'long': FFIType.i32,
+    'long int': FFIType.i32,
+    'signed long': FFIType.i32,
+    'signed long int': FFIType.i32,
+    'long long': FFIType.i64,
+    'long long int': FFIType.i64,
+    'unsigned long long': FFIType.i64,
+    'unsigned long long int': FFIType.i64,
+    'signed long long': FFIType.i64,
+    'signed long long int': FFIType.i64,
+    'float': FFIType.float,
+    'long double': FFIType.double,
+    'double': FFIType.double,
+    'char*': FFIType.cstring,
+    'void': FFIType.void,
+    'void*': FFIType.ptr,
+  } as { [key: string]: FFIType };
+  return CTypeToFFIMap?.[type] || FFIType.void;
+}
+
+/** Given a type from C, return the js type */
+export function inferJSArgType(fromType: string): string {
+  Log.debug(`Inferring JS Arg type from ${fromType}`);
+  if (/(char)/.test(fromType)) return 'Buffer';
+  if (/(int|long|double|float)/.test(fromType)) return 'number';
+  return 'unknown';
+}
+
+export function inferJSReturnType(fromType: string): string {
+  if (/(\*char|char)/.test(fromType)) return 'string';
+  if (/(int|long|double|float)/.test(fromType)) return 'number';
+  return 'unknown';
 }
