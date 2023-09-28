@@ -9,7 +9,6 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
-  "types": "types.d.ts",
   "dependencies": {
     "colors": "^1.4.0"
   }
