@@ -149,8 +149,6 @@ export async function getMethods(source: string): Promise<SourceExport[]>  {
     });
   }
 
-  console.error(methods);
-
   return methods;
 }
 

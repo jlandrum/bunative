@@ -2,13 +2,14 @@
   "name": "bunative",
   "module": "index.ts",
   "type": "module",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "devDependencies": {
     "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "types": "types.d.ts",
   "dependencies": {
     "colors": "^1.4.0"
   }
