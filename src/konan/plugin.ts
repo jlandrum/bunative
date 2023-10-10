@@ -1,11 +1,11 @@
-import { NativeModuleConfigSet, KonanNativeModule, NativeModule } from "bunative";
+import { NativeModuleConfigSet, KonanNativeModule, NativeModule } from "../../types";
 
 import { BunPlugin } from "bun";
 import { FFIFunction, Narrow, dlopen } from "bun:ffi";
 import { KTypeToFFI, compileSource, generateTypes, getMethods } from "./compiler";
 import { relative, dirname } from "path";
 
-import Log from '../log';
+import Log, { Verbosity } from '../log';
 import colors from 'colors';
 
 export interface KonanCompileConfig {
@@ -17,6 +17,12 @@ export interface KonanCompileConfig {
   buildConfig?: NativeModuleConfigSet<KonanNativeModule>;
 }
 
+/**
+ * Compiles Kotlin Native code to a native binary that
+ * can be loaded using bunative.
+ * @param param0 The configuration for the plugin
+ * @returns A plugin that can be loaded with Bun.plugin
+ */
 export const KonanCompilePlugin = ({
   buildConfig = {},
   verbosity = undefined

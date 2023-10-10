@@ -1,5 +1,7 @@
 import colors from 'colors';
 
+export type Verbosity = undefined | 'v' | 'vv' | 'vvv' | 'vvvv';
+
 export const Log = {
   verbosity: undefined as Verbosity,
 

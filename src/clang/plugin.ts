@@ -1,10 +1,12 @@
-import { BunPlugin, plugin } from "bun";
-import { FFIFunction, FFIType, Narrow, dlopen } from "bun:ffi";
+import { NativeModuleConfigSet, ClangNativeModule } from "../../types";
+
+import { BunPlugin } from "bun";
+import { FFIFunction, Narrow, dlopen } from "bun:ffi";
 import { CTypeToFFI, compileSource, generateTypes, getMethods } from "./compiler";
-import Log from '../log';
 import { relative, dirname } from "path";
+
+import Log, { Verbosity } from '../log';
 import colors from 'colors';
-import { NativeModuleConfigSet, ClangNativeModule } from "bunative";
 
 export interface ClangCompileConfig {
 

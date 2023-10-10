@@ -1,4 +1,4 @@
-import { KonanNativeModule, SourceExport } from "bunative";
+import { KonanNativeModule, SourceExport } from "../../types";
 
 import { checkHash } from "../difftrack";
 import { mkdirSync } from "node:fs";

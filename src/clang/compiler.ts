@@ -1,8 +1,9 @@
+import { ClangNativeModule, SourceExport } from "../../types";
+
 import { FFIType } from "bun:ffi";
 import { mkdirSync } from "node:fs";
 import { relative } from "node:path";
 import { checkHash } from "../difftrack";
-import { ClangNativeModule, SourceExport } from "bunative";
 
 import Log from "../log";
 import colors from 'colors';

@@ -8,7 +8,7 @@ let hashTable: {
 
 export async function generateHash(fromFile: string): Promise<string | undefined> {
   Log.debug(`Fetching hash for ${fromFile}`);
-  const fileToHash = await file(fromFile);
+  const fileToHash = file(fromFile);
 
   if (!await fileToHash.exists()) {
     Log.debug(`File ${file} does not exist.`);
