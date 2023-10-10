@@ -1,5 +1,6 @@
 export { KonanCompilePlugin as konan } from "./src/konan/plugin";
 export { ClangCompilePlugin as clang } from "./src/clang/plugin";
+export { RustCompilePlugin as rust } from "./src/rust/plugin";
 
 export interface NativeModule {
 
@@ -48,6 +49,15 @@ export interface KonanNativeModule extends NativeModule {
 
   /** Additional source files to include */
   additionalSources?: string[];
+}
+
+export interface RustNativeModule extends NativeModule {
+
+  /** Sets the optimization level */
+  optimize?: 0 | 1 | 2 | 3 | 's' | 'z';
+
+  /** Generate debug headers */
+  debug?: boolean;
 }
 
 export interface NativeModuleConfigSet<T extends NativeModule> {

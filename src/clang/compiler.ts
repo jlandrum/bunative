@@ -83,7 +83,7 @@ export async function inferArgSignature(fromSignature: string): Promise<[string,
   const name = fromSignature.split(' ').reverse()[0];
 
   if (!name) return undefined;
-  return [name, await CTypeToFFI(type)];
+  return [name, CTypeToFFI(type)];
 }
 
 /**
