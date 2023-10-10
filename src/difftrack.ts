@@ -1,5 +1,4 @@
 import { file, write } from "bun";
-import { read } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import Log from "./log";
 

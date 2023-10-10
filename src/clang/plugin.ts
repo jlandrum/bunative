@@ -4,6 +4,7 @@ import { CTypeToFFI, compileSource, generateTypes, getMethods } from "./compiler
 import Log from '../log';
 import { relative, dirname } from "path";
 import colors from 'colors';
+import { NativeModuleConfigSet, ClangNativeModule } from "bunative";
 
 export interface ClangCompileConfig {
 

@@ -1,9 +1,12 @@
+import { KonanNativeModule, SourceExport } from "bunative";
+
 import { checkHash } from "../difftrack";
-import Log from "../log";
 import { mkdirSync } from "node:fs";
 import { relative } from "node:path";
-import colors from 'colors';
 import { FFIType } from "bun:ffi";
+
+import colors from 'colors';
+import Log from "../log";
 
 /**
  * Builds a source file as a library

@@ -1,5 +1,4 @@
 import { FFIType } from "bun:ffi";
-import Log from "./log";
 
 /**
  * Given an FFI type, return the TypeScript type for it.

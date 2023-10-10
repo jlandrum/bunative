@@ -1,8 +1,11 @@
-import { BunPlugin, plugin } from "bun";
-import { FFIFunction, FFIType, Narrow, dlopen } from "bun:ffi";
+import { NativeModuleConfigSet, KonanNativeModule, NativeModule } from "bunative";
+
+import { BunPlugin } from "bun";
+import { FFIFunction, Narrow, dlopen } from "bun:ffi";
 import { KTypeToFFI, compileSource, generateTypes, getMethods } from "./compiler";
-import Log from '../log';
 import { relative, dirname } from "path";
+
+import Log from '../log';
 import colors from 'colors';
 
 export interface KonanCompileConfig {

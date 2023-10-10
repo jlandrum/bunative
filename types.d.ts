@@ -1,78 +1,80 @@
-interface NativeModule {
-  
-  /** Overrides the output filename/path. */
-  out?: string
-}
+declare module 'bunative' {
+  interface NativeModule {
 
-interface ClangNativeModule extends NativeModule {
+    /** Overrides the output filename/path. */
+    out?: string
+  }
 
-  /** Sets the optimization level */
-  optimize?: 0 | 1 | 2 | 3 | 'fast' | 's' | 'z' | 'g';
+  interface ClangNativeModule extends NativeModule {
 
-  /** Specifies which libraries to include */
-  libraries?: string[];
+    /** Sets the optimization level */
+    optimize?: 0 | 1 | 2 | 3 | 'fast' | 's' | 'z' | 'g';
 
-  /** Specified which frameworks to include */
-  frameworks?: string[];
+    /** Specifies which libraries to include */
+    libraries?: string[];
 
-  /** Generate debug headers */
-  debug?: boolean;
+    /** Specified which frameworks to include */
+    frameworks?: string[];
 
-  /** Search paths for headers */
-  headerSearchPaths?: string[];
+    /** Generate debug headers */
+    debug?: boolean;
 
-  /** Search paths for libraries */
-  libSearchPaths?: string[];
+    /** Search paths for headers */
+    headerSearchPaths?: string[];
 
-  /** Additional source files to include */
-  additionalSources?: string[];
+    /** Search paths for libraries */
+    libSearchPaths?: string[];
 
-  /** Uses the specified header to build the function map, 
- * relative to the source directory */
-  useHeader?: string;
-}
+    /** Additional source files to include */
+    additionalSources?: string[];
 
-interface KonanNativeModule extends NativeModule {
+    /** Uses the specified header to build the function map, 
+   * relative to the source directory */
+    useHeader?: string;
+  }
 
-  /** Sets the optimization level */
-  optimize?: boolean;
+  interface KonanNativeModule extends NativeModule {
 
-  /** Specifies which libraries to include */
-  libraries?: string[];
+    /** Sets the optimization level */
+    optimize?: boolean;
 
-  /** Generate debug headers */
-  debug?: boolean;
+    /** Specifies which libraries to include */
+    libraries?: string[];
 
-  /** Additional source files to include */
-  additionalSources?: string[];
-}
+    /** Generate debug headers */
+    debug?: boolean;
 
-interface NativeModuleConfigSet<T extends NativeModule> {
-  /**
-   * Global build settings will always be included
-   * for all targets.
-   */
-  global?: Omit<T, 'out', 'useHeader'>;
+    /** Additional source files to include */
+    additionalSources?: string[];
+  }
 
-  /**
-   * Specifies overrides / target specific properties
-   * for a given source file.
-   * The source should match the import name, excluding
-   * the path.
-   */
-  [source: string]: T;
-}
+  interface NativeModuleConfigSet<T extends NativeModule> {
+    /**
+     * Global build settings will always be included
+     * for all targets.
+     */
+    global?: Omit<T, 'out', 'useHeader'>;
 
-interface SourceExport {
+    /**
+     * Specifies overrides / target specific properties
+     * for a given source file.
+     * The source should match the import name, excluding
+     * the path.
+     */
+    [source: string]: T;
+  }
 
-  /** The return type of the method, as a TS type. */
-  returnType: string;
+  interface SourceExport {
 
-  /** The name of the method */
-  methodName: string;
+    /** The return type of the method, as a TS type. */
+    returnType: string;
 
-  /** The arguments for the method */
-  methodArgs: [string, string][];
+    /** The name of the method */
+    methodName: string;
+
+    /** The arguments for the method */
+    methodArgs: [string, string][];
+  }
 }
 
 type Verbosity = undefined | 'v' | 'vv' | 'vvv' | 'vvvv';
